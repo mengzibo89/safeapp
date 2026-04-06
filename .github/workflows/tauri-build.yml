@@ -31,8 +31,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v8.5.0
-          releaseName: "Safety Inspector Pro v8.5"
-          releaseBody: "基于 Vue3 + Tauri 的自动化构建版本"
+          # 使用 v__VERSION__ 占位符自动匹配 package.json/tauri.conf.json 中的版本号
+          tagName: v__VERSION__
+          releaseName: "Safety Inspector Pro v__VERSION__"
+          releaseBody: "基于 Vue3 + Tauri 的自动化构建版本 (V8.5 Final)"
           releaseDraft: true
           prerelease: false
