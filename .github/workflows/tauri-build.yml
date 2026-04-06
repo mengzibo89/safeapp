@@ -1,0 +1,38 @@
+name: "Tauri Build"
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-tauri:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest] # 根据需要可以增加 macos-latest, ubuntu-20.04
+    runs-on: ${{ matrix.platform }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        
+      - name: install frontend dependencies
+        run: npm install
+        
+      - name: build frontend and tauri
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: app-v8.5.0
+          releaseName: "Safety Inspector Pro v8.5"
+          releaseBody: "基于 Vue3 + Tauri 的自动化构建版本"
+          releaseDraft: true
+          prerelease: false
