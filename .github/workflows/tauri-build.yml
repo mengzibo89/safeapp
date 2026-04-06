@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-latest] # 根据需要可以增加 macos-latest, ubuntu-20.04
+        platform: [windows-latest]
     runs-on: ${{ matrix.platform }}
     
     steps:
@@ -23,17 +23,16 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         
-      - name: install frontend dependencies
+      - name: install dependencies
         run: npm install
         
-      - name: build frontend and tauri
+      - name: build app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # 使用 v__VERSION__ 占位符自动匹配 package.json/tauri.conf.json 中的版本号
-          tagName: v__VERSION__
+          tagName: v__VERSION__ # 自动获取 tauri.conf.json 中的版本
           releaseName: "Safety Inspector Pro v__VERSION__"
-          releaseBody: "基于 Vue3 + Tauri 的自动化构建版本 (V8.5 Final)"
+          releaseBody: "基于 Vue3 + Tauri 的终极自动化构建版本"
           releaseDraft: true
           prerelease: false
