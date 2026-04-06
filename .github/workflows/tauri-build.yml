@@ -6,6 +6,9 @@ on:
 
 jobs:
   build-tauri:
+    # ⭐ 修复核心：显式赋予内容写入权限，允许 Action 创建 Release 和 Tag
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -31,8 +34,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v__VERSION__ # 自动获取 tauri.conf.json 中的版本
+          # 使用 v__VERSION__ 占位符自动匹配 tauri.conf.json 中的版本号
+          tagName: v__VERSION__ 
           releaseName: "Safety Inspector Pro v__VERSION__"
-          releaseBody: "基于 Vue3 + Tauri 的终极自动化构建版本"
+          releaseBody: "基于 Vue3 + Tauri 的自动化构建版本 (修复权限逻辑)"
           releaseDraft: true
           prerelease: false
